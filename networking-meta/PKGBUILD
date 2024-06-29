@@ -8,19 +8,16 @@ url='https://github.com/dankcuddlybear/pkgbuilds'
 install=install.install
 depends=(
 	avahi
-	bluez-cups
-	cups-browsed
-	cups-pdf
-	cups-pk-helper
-	foomatic-db-engine
-	foomatic-db-gutenprint-ppds
-	foomatic-db-nonfree-ppds
-	foomatic-db-ppds
-	gsfonts
-	gutenprint
-	ipp-usb
-	sane-airscan
-	sane-gt68xx-firmware
-	splix
-	system-config-printer
+	bluez
+	bluez-deprecated-tools
+	bluez-utils
+	modemmanager
+	nbd
+	networkmanager
+	network-manager-applet
+	nss-mdns
+	openssh
+	openssl
+	usb_modeswitch
+	wireless-regdb
 )
