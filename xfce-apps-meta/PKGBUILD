@@ -1,0 +1,43 @@
+# Maintainer: Dankcuddlybear <dankcuddlybear@proton.me>
+pkgname=xfce-apps-meta
+pkgver=$(date +%Y.%-m.%-d)
+pkgrel=$(expr $(date +%-S) + $(expr 60 \* $(date +%-M)) + $(expr 3600 \* $(date +%-H)))
+pkgdesc='XFCE applications meta-package (and some useful plugins)'
+arch=(any)
+url='https://github.com/dankcuddlybear/pkgbuilds'
+depends=(
+	adwaita-qt5
+	adwaita-qt6
+	galculator
+	gspell
+	gvfs-meta
+	lightdm-gtk-greeter-settings
+	mousepad
+	qt5ct
+	qt6ct
+	thunar
+	thunar-archive-plugin
+	thunar-media-tags-plugin
+	thunar-volman
+	# Thumbnails
+	tumbler ffmpegthumbnailer freetype2 libgepub libgsf libopenraw poppler-glib
+	xarchiver
+	xfce4-clipman-plugin
+	xfce4-cpugraph-plugin
+	xfce4-diskperf-plugin
+ 	xfce4-genmon-plugin
+	xfce4-mailwatch-plugin
+	xfce4-mount-plugin
+	xfce4-mpc-plugin
+	xfce4-netload-plugin
+	xfce4-notes-plugin
+	xfce4-screenshooter
+	xfce4-sensors-plugin
+	xfce4-systemload-plugin
+	xfce4-taskmanager
+	xfce4-terminal
+	xfce4-weather-plugin
+	xfce4-whiskermenu-plugin
+	xfce4-verve-plugin
+	xfce4-xkb-plugin
+)
