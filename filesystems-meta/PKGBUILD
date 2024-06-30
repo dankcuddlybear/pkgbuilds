@@ -1,14 +1,23 @@
 # Maintainer: Dankcuddlybear <dankcuddlybear@proton.me>
-pkgname=multimedia-codecs-meta
+pkgname=filesystems-meta
 pkgver=$(date +%Y.%-m.%-d)
 pkgrel=$(expr $(date +%-S) + $(expr 60 \* $(date +%-M)) + $(expr 3600 \* $(date +%-H)))
-pkgdesc='Video/audio codecs - all-in-one package'
+pkgdesc='Support for additional filesystems - all-in-one package'
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
-	gst-libav
-	gst-plugins-bad
-	gst-plugins-base
-	gst-plugins-good
-	gst-plugins-ugly
+	btrfs-progs
+	cryptsetup
+	dmraid
+	dosfstools
+	e2fsprogs
+	exfatprogs
+	f2fs-tools
+	fscrypt
+	lvm2
+	mdadm
+	mtools
+	ntfs-3g
+	squashfs-tools
+	udftools
 )
