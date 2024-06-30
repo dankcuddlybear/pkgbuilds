@@ -6,22 +6,14 @@ pkgdesc='XFCE applications and plugins - all-in-one package'
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
-	adwaita-qt5
-	adwaita-qt6
-	galculator
 	gspell
 	gvfs-meta
 	lightdm-gtk-greeter-settings
 	mousepad
-	qt5ct
-	qt6ct
 	thunar
 	thunar-archive-plugin
 	thunar-media-tags-plugin
 	thunar-volman
-	# Thumbnails
-	tumbler ffmpegthumbnailer freetype2 libgepub libgsf libopenraw poppler-glib
-	xarchiver
 	xfce4-clipman-plugin
 	xfce4-cpugraph-plugin
 	xfce4-diskperf-plugin
@@ -40,4 +32,6 @@ depends=(
 	xfce4-whiskermenu-plugin
 	xfce4-verve-plugin
 	xfce4-xkb-plugin
+	## Thumbnails support
+	tumbler ffmpegthumbnailer freetype2 libgepub libgsf libopenraw poppler-glib
 )
