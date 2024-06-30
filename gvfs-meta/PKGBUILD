@@ -6,9 +6,11 @@ pkgdesc='Support for virtual filesystems in applications using GVFS - meta packa
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
-	gvfs-afc
-	gvfs-dnssd
+	gvfs-afc	
+	gvfs-dnssd	
 	gvfs-goa
+	gvfs-google
+	gvfs-gphoto2
 	gvfs-mtp
 	gvfs-nfs
 	gvfs-onedrive
