@@ -18,6 +18,7 @@ depends=(
 	nss-mdns
 	openssh
 	openssl
+	polkit
 	usb_modeswitch
 	wireless-regdb
 )
