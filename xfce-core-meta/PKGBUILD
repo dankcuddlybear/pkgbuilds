@@ -7,6 +7,8 @@ arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 install=install.install
 depends=(
+	adwaita-qt5
+	adwaita-qt6
 	blueman
 	gnu-free-fonts
 	gvfs-meta
@@ -15,6 +17,8 @@ depends=(
 	mugshot
 	network-manager-applet
 	pavucontrol
+	qt5ct
+	qt6ct
 	thunar
 	thunar-archive-plugin
 	thunar-media-tags-plugin
