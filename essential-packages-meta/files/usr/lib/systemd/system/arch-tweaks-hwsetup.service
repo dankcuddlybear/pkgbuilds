@@ -1,0 +1,13 @@
+[Unit]
+Description=Apply fixes for specific hardware
+
+[Service]
+Type=oneshot
+Restart=no
+RemainAfterExit=no
+ExecStart=/usr/lib/arch-tweaks/hwfixes
+
+[Install]
+WantedBy=rescue.target
+WantedBy=multi-user.target
+WantedBy=graphical.target

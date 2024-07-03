@@ -12,3 +12,7 @@ depends=(
 	gst-plugins-good
 	gst-plugins-ugly
 )
+package() {
+	cp -r "$srcdir/../files/usr" "$pkgdir"
+	"$srcdir/../../set-default-permissions.sh" "$pkgdir"
+}
