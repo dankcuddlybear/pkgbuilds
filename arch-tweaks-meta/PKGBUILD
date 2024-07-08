@@ -6,9 +6,12 @@ pkgdesc='Performance and energy optimisations and other tweaks for Arch Linux - 
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
+	base
 	dmidecode
 	hdparm
 	kernel-modules-hook
+	KSMBD-MODULE
+	mkinitcpio
 )
 package() {
 	cp -r "$srcdir/../files/usr" "$pkgdir"

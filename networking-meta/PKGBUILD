@@ -16,7 +16,6 @@ depends=(
 	modemmanager
 	nbd
 	networkmanager
-	network-manager-applet
 	nss-mdns
 	openssh
 	openssl
