@@ -26,7 +26,7 @@ depends=(
 	# Thumbnails
 	tumbler ffmpegthumbnailer freetype2 libgepub libgsf libopenraw poppler-glib
 	xdg-desktop-portal-gtk
-	xdg-user-dirs-gtk
+	xdg-desktop-portal-xapp
 	xfce4-panel
 	xfce4-power-manager
 	xfce4-pulseaudio-plugin

@@ -8,6 +8,8 @@ url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
 	android-udev
 	game-devices-udev
+	xdg-desktop-portal
+	xdg-user-dirs
 )
 package() {
 	cp -r "$srcdir/../files/usr" "$pkgdir"
