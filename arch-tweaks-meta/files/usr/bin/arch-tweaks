@@ -1,6 +1,6 @@
 #!/bin/sh
-#UTIL_DIR="/usr/lib/arch-tweaks/system-tools"
-UTIL_DIR="/home/alex4nder/pkgbuilds/arch-tweaks-meta/files/usr/lib/arch-tweaks/system-tools"
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+UTIL_DIR="$SCRIPT_DIR/../lib/arch-tweaks/system-tools"
 
 ## Exit if no command given
 [ -z "$1" ] && echo "[ERROR] No command given, run \"$(basename $0) help\" for a list of commands" && exit 1

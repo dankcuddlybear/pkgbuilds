@@ -3,12 +3,21 @@ Error() {
 	echo $1
 	exit 1
 }
-[ ! -d /usr/share/limine ] && exit 0
+
+## If Limine is not installed to /boot, exit gracefully
+if [ ! -f /boot/limine.cfg ] && [ ! -f /boot/limine/limine.cfg ] && \
+[ ! -f /boot/boot/limine.cfg ] && [ ! -f /boot/boot/limine/limine.cfg ] && \
+[ ! -f /boot/EFI/boot/limine.cfg ]; then
+echo "limine.cfg not found in /boot, skipping install"; exit 0
+else echo "Found limine.cfg"; fi
+
+
 [ $(whoami) != root ] && Error "You must run this script with root priviliges."
 [ -z "$1" ] && Error "No command (install/upgrade/uninstall)"
 
 # Get boot partition from /etc/fstab
 BOOT=$(cat /etc/fstab | grep -m 1 " /boot \|	/boot \| /boot	\|	/boot	" | cut -d ' ' -f 1 | cut -d '	' -f 1)
+echo "$BOOT"
 [ -z "$BOOT" ] && Error "No /boot partition specified in /etc/fstab"
 case $(echo $BOOT | cut -d '=' -f 1) in
 	UUID)
@@ -26,6 +35,7 @@ case $(echo $BOOT | cut -d '=' -f 1) in
 		BOOT=$(readlink -f $BOOT)
 		;;
 esac
+echo "Found /boot partition $BOOT"
 
 # Find the disk with the boot partition, and get its partition number
 if [ ${BOOT:5:4} == nvme ] || [ ${BOOT:5:6} == mmcblk ]; then
@@ -38,17 +48,19 @@ else
 	Error "$BOOT is on an unsupported media type! Please set /boot partition in /etc/fstab to a partition on a HDD or flash storage."
 fi
 [ "$BOOT_DISK" == "$BOOT_PARTNO" ] && Error "$BOOT is a disk, not a partition! Please set a /boot partition in /etc/fstab."
+echo "(located on disk $BOOT_DISK, partition $BOOT_PARTNO)"
 
 EFI_BITS="$(cat /sys/firmware/efi/fw_platform_size 2> /dev/null)"
 
 Upgrade() {
 	if [ -z "$EFI_BITS" ]; then # BISO install
+		echo "Installing in BIOS mode..."
 		cp /usr/share/limine/limine-bios.sys /boot/limine/
 		limine bios-install $BOOT_DISK
 	else # UEFI install
 		mkdir -p /boot/EFI/limine /boot/limine &> /dev/null
-		[ "$EFI_BITS" == 32 ] && cp /usr/share/limine/BOOTIA32.EFI /boot/EFI/limine/
-		[ "$EFI_BITS" == 64 ] && cp /usr/share/limine/BOOTX64.EFI /boot/EFI/limine/
+		[ "$EFI_BITS" == 32 ] && echo "Installing in UEFI32 mode..." && cp /usr/share/limine/BOOTIA32.EFI /boot/EFI/limine/
+		[ "$EFI_BITS" == 64 ] && echo "Installing in UEFI64 mode..." && cp /usr/share/limine/BOOTX64.EFI /boot/EFI/limine/
 	fi
 }
 
@@ -64,7 +76,7 @@ case "$1" in
 		ROOT_DEV="$(cat /etc/fstab | grep -m 1 " / \|	/ \| /	\|	/	" | cut -d ' ' -f 1 | cut -d '	' -f 1)"
 		[ -z "$ROOT_DEV" ] && Error "No root (/) partition specified in /etc/fstab"
 		## Configure Limine
-		KPARAMS="rw root=$ROOT_DEV $(cat /usr/share/arch-tweaks/custom-configs/boot/limine/limine.cfg | grep -m 1 "\${KPARAMS}=" | cut -b12-)"
+		KPARAMS="rw root=$ROOT_DEV $(cat /usr/share/arch-tweaks/custom-configs/limine/limine.cfg | grep -m 1 "\${KPARAMS}=" | cut -b12-)"
 		[ -f /boot/intel-ucode.img ] && KPARAMS="$KPARAMS intel_iommu=on"
 		cp -r /usr/share/arch-tweaks/custom-configs/limine /boot # Copy bootloader config files and resources
 		sed -i "s/^.*\${KPARAMS}=.*$/\${KPARAMS}=${KPARAMS}/" /boot/limine/limine.cfg
@@ -77,13 +89,11 @@ case "$1" in
 		fi
 		echo "Installed Limine boot loader successfully.";;
 	upgrade)
-		if [ -d /boot/limine ]; then
-			echo "Upgrading Limine bootloader..."
-			Upgrade && \
-			echo "Upgraded Limine boot loader successfully."
-		fi;;
+		echo "Upgrading Limine bootloader..."
+		Upgrade && \
+		echo "Upgraded Limine boot loader successfully."
+		;;
 	uninstall)
-		limine-deploy --undeploy $BOOT_DISK # Delete MBR boot code
 		rm -rf /boot/EFI/limine /boot/limine
 		echo "Limine has been removed from your system";;
 	*) Error "Unrecognised command \"$1\"";;
