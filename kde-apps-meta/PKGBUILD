@@ -6,12 +6,37 @@ pkgdesc='KDE applications and plugins - all-in-one package'
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
+	ark arj lrzip lzop p7zip unrar
+	colord-kde
+	dolphin dolphin-plugins kdenetwork-filesharing kio-admin purpose
+	filelight
+	gwenview kamera kimageformats qt6-imageformats
+	kamoso
+	kate
+	kcalc
+	kcharselect
+	kcolorchooser
+	kdeconnect qt6-tools sshfs
+	kdenetwork-filesharing
+	kdepim-addons
 	kdeplasma-addons quota-tools
+	kfind
+	khelpcenter
 	kgamma
 	kinfocenter fwupd
+	kio-extras
+	kio-gdrive
+	kio-zeroconf
+	kolourpaint
+	konsole
 	kwalletmanager
+	okular ebook-tools kdegraphics-mobipocket
 	plasma-browser-integration
 	plasma-systemmonitor
 	plasma-vault
 	plasma-workspace-wallpapers
+	spectacle
+	yakuake
+	# Thumbnails
+	ffmpegthumbs kdegraphics-thumbnailers
 )

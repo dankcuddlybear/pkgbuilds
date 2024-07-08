@@ -13,6 +13,7 @@ depends=(
 	flatpak-kcm
 	kaccounts-integration
 	kde-gtk-config gtk3
+	kdialog
 	krdp
 	kscreen
 	ksshaskpass
