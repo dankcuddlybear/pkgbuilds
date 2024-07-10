@@ -4,16 +4,31 @@ Error() {
 	exit 1
 }
 
-## If Limine is not installed to /boot, exit gracefully
-if [ ! -f /boot/limine.cfg ] && [ ! -f /boot/limine/limine.cfg ] && \
-[ ! -f /boot/boot/limine.cfg ] && [ ! -f /boot/boot/limine/limine.cfg ] && \
-[ ! -f /boot/EFI/boot/limine.cfg ]; then
-echo "limine.cfg not found in /boot, skipping install"; exit 0
-else echo "Found limine.cfg"; fi
+RootCheck() {
+	[ $(whoami) != root ] && Error "You must run this script with root priviliges."
+}
+
+Help() {
+	echo "Usage: $(basename $0) <install|upgrade|uninstall>"
+	echo " install:   Install Limine on your boot disk"
+	echo "            and create a new configuration file at /boot/limine/limine.cfg"
+	echo "            To avoid overwriting your configuration,"
+	echo "            please save it at /boot/limine.cfg instead"
+	echo " upgrade:   Upgrade Limine to the latest version on your boot disk"
+	echo "            without overwriting your configuration file"
+	echo " uninstall: Remove Limine and all limine.cfg files from your /boot partition"
+	echo "            Make sure you back up your limine.cfg file"
+	echo "            if you want to use it in the future"
+	exit 0
+}
 
 
-[ $(whoami) != root ] && Error "You must run this script with root priviliges."
-[ -z "$1" ] && Error "No command (install/upgrade/uninstall)"
+[ -z "$1" ] && Error "No command - run \"$(basename $0) help\" for a list of commands"
+
+# Show help
+case $1 in 	help|--help|-h) Help;; esac
+
+RootCheck
 
 # Get boot partition from /etc/fstab
 BOOT=$(cat /etc/fstab | grep -m 1 " /boot \|	/boot \| /boot	\|	/boot	" | cut -d ' ' -f 1 | cut -d '	' -f 1)
@@ -82,19 +97,23 @@ case "$1" in
 		sed -i "s/^.*\${KPARAMS}=.*$/\${KPARAMS}=${KPARAMS}/" /boot/limine/limine.cfg
 		sed -i "s/^.*\${KERNEL}=.*$/\${KERNEL}=$KERNEL/" /boot/limine/limine.cfg
 		## Create UEFI boot entry
-		
 		if [ ! -z "$EFI_BITS" ]; then
 			[ "$EFI_BITS" == 32 ] && efibootmgr -c -d $BOOT_DISK -p $BOOT_PARTNO -L "Limine" -l '\EFI\Limine\BOOTIA32.EFI'
 			[ "$EFI_BITS" == 64 ] && efibootmgr -c -d $BOOT_DISK -p $BOOT_PARTNO -L "Limine" -l '\EFI\Limine\BOOTX64.EFI'
 		fi
 		echo "Installed Limine boot loader successfully.";;
 	upgrade)
+		## If limine.cfg is not found in /boot, exit gracefully
+		if [ ! -f /boot/limine.cfg ] && [ ! -f /boot/limine/limine.cfg ] && \
+		[ ! -f /boot/boot/limine.cfg ] && [ ! -f /boot/boot/limine/limine.cfg ] && \
+		[ ! -f /boot/EFI/boot/limine.cfg ]; then
+		echo "limine.cfg not found in /boot, skipping install"; exit 0; fi
 		echo "Upgrading Limine bootloader..."
 		Upgrade && \
 		echo "Upgraded Limine boot loader successfully."
 		;;
 	uninstall)
-		rm -rf /boot/EFI/limine /boot/limine
-		echo "Limine has been removed from your system";;
+		rm -rf /boot/EFI/limine /boot/limine /boot/limine.cfg
+		echo "Limine has been removed from your /boot partition";;
 	*) Error "Unrecognised command \"$1\"";;
 esac

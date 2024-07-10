@@ -12,11 +12,14 @@ depends=(
 	kernel-modules-hook
 	KSMBD-MODULE
 	mkinitcpio
+	networkmanager
+	sudo
 )
 package() {
+	cp -r "$srcdir/../files/etc" "$pkgdir"
 	cp -r "$srcdir/../files/usr" "$pkgdir"
 	"$srcdir/../../set-default-permissions.sh" "$pkgdir"
-
+	chmod 750 "$pkgdir/etc/sudoers.d"
 	CDIR="$(pwd)"
 	for DIR in "$pkgdir/usr/bin" \
 	"$pkgdir/usr/lib/arch-tweaks/system-scripts" \
