@@ -1,5 +1,5 @@
 [Unit]
-Description=Apply fixes for specific hardware
+Description=Detect and fix OEM specific bugs
 
 [Service]
 Type=oneshot
