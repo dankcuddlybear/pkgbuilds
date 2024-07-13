@@ -5,7 +5,7 @@ Description=Detect and fix OEM specific bugs
 Type=oneshot
 Restart=no
 RemainAfterExit=no
-ExecStart=/usr/lib/arch-tweaks/hwfixes
+ExecStart=/usr/lib/arch-tweaks/system-scripts/hwfixes
 
 [Install]
 WantedBy=rescue.target

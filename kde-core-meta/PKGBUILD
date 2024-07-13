@@ -6,6 +6,10 @@ pkgdesc='KDE Plasma barebones desktop - all-in-one package (only desktop, no app
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 install=install.install
+backup=(
+	etc/sddm.conf.d/kde_settings.conf
+	etc/sddm.conf.d/wayland.conf
+)
 depends=(
 	bluedevil bluez-obex
 	breeze-gtk
@@ -31,4 +35,9 @@ depends=(
 	sddm-kcm
 	xdg-desktop-portal-kde
 )
-
+package() {
+	cp -r "$srcdir/../files/etc" "$pkgdir"
+	cp -r "$srcdir/../files/usr" "$pkgdir"
+	"$srcdir/../../set-default-permissions.sh" "$pkgdir"
+	chmod +x "$pkgdir/usr/share/libalpm/scripts/kde-core-meta-install"
+}
