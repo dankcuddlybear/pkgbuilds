@@ -5,7 +5,6 @@ pkgrel=$(expr $(date +%-S) + $(expr 60 \* $(date +%-M)) + $(expr 3600 \* $(date 
 pkgdesc='KDE Plasma barebones desktop - all-in-one package (only desktop, no apps)'
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
-install=install.install
 backup=(
 	etc/sddm.conf.d/kde_settings.conf
 	etc/sddm.conf.d/wayland.conf

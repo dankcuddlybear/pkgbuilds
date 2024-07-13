@@ -1,5 +1,0 @@
-post_install() {
-	rm -f /etc/systemd/system/display-manager.service &> /dev/null
-	systemctl enable sddm &> /dev/null
-	echo "[ATTENTION] SDDM (user login manager GUI) has been enabled. To start SDDM, reboot your device or run the command \"sudo systemctl start sddm\"."
-}
