@@ -1,0 +1,92 @@
+#!/bin/sh
+[ -z "$1" ] && echo "No command given, run \"$(basename $0) help\" for a list of commands" && exit 1
+
+RootCheck() {
+	[ $(whoami) != "root" ] && echo "[ERROR] You must run this program as root" && exit 1
+}
+Help() {
+	echo "Usage: $(basename $0) <COMMAND>"
+	echo " auto:       Enable auto pacman mirrorlist update and update all pacman mirrorlists."
+	echo " manual:     Disable auto pacman mirrorlist update."
+	echo " update:     Update all pacman mirrorlists now."
+	exit 0
+}
+GetTimeAndDate() {
+	date +%Y/%-m/%-d\ %-H:%-M
+}
+UpdateArchMirrors() {
+	## Download up to date mirrorlist and rate mirrors
+	curl -s "https://archlinux.org/mirrorlist/?country=all&protocol=https&ip_version=4&ip_version=6&use_mirror_status=on" | \
+	sed "s/#Server = /Server = /g" | \
+	rate-mirrors --allow-root --disable-comments arch > \
+	/etc/pacman.d/mirrorlist.new
+	## Check that file is not empty, in case of errors, before overwriting mirrorlist
+	[ ! -z "$(cat /etc/pacman.d/mirrorlist.new)" ] && \
+	mv /etc/pacman.d/mirrorlist.new /etc/pacman.d/mirrorlist
+}
+UpdateCachyOSMirrors() {
+	## Download mirrorlist from Github and rate mirrors
+	curl -s "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/cachyos-mirrorlist/cachyos-mirrorlist" | \
+	rate-mirrors --allow-root --disable-comments cachyos > \
+	/etc/pacman.d/cachyos-mirrorlist.new
+	## Check that file is not empty, in case of errors, before overwriting mirrorlist
+	[ ! -z "$(cat /etc/pacman.d/cachyos-mirrorlist.new)" ] && \
+	mv /etc/pacman.d/cachyos-mirrorlist.new /etc/pacman.d/cachyos-mirrorlist
+}
+UpdateCachyOSV3Mirrors() {
+	## Download mirrorlist from Github and rate mirrors
+	curl -s "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/cachyos-v3-mirrorlist/cachyos-v3-mirrorlist" | \
+	rate-mirrors --allow-root --disable-comments cachyos | \
+	sed "s/\$arch/x86_64_v3/g" > \
+	/etc/pacman.d/cachyos-v3-mirrorlist.new
+	## Check that file is not empty, in case of errors, before overwriting mirrorlist
+	[ ! -z "$(cat /etc/pacman.d/cachyos-v3-mirrorlist.new)" ] && \
+	mv /etc/pacman.d/cachyos-v3-mirrorlist.new /etc/pacman.d/cachyos-v3-mirrorlist
+}
+UpdateCachyOSV4Mirrors() {
+	## Download mirrorlist from Github and rate mirrors
+	curl -s "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/cachyos-v4-mirrorlist/cachyos-v4-mirrorlist"
+	rate-mirrors --allow-root --disable-comments cachyos | \
+	sed "s/\$arch/x86_64_v4/g" > \
+	/etc/pacman.d/cachyos-v4-mirrorlist.new
+	## Check that file is not empty, in case of errors, before overwriting mirrorlist
+	[ ! -z "$(cat /etc/pacman.d/cachyos-v4-mirrorlist.new)" ] && \
+	mv /etc/pacman.d/cachyos-v4-mirrorlist.new /etc/pacman.d/cachyos-v4-mirrorlist
+}
+UpdateChaoticMirrors() {
+	## Download mirrorlist from Github and rate mirrors
+	curl -s "https://raw.githubusercontent.com/chaotic-aur/pkgbuild-chaotic-mirrorlist/main/mirrorlist" | \
+	rate-mirrors --allow-root --disable-comments chaotic-aur > \
+	/etc/pacman.d/chaotic-mirrorlist.new
+	## Check that file is not empty, in case of errors, before overwriting mirrorlist
+	[ ! -z "$(cat /etc/pacman.d/chaotic-mirrorlist.new)" ] && \
+	mv /etc/pacman.d/chaotic-mirrorlist.new /etc/pacman.d/chaotic-mirrorlist
+}
+UpdateAllMirrors() {
+	echo "Updating all pacman mirrors now..."
+	UpdateArchMirrors &
+	cat /etc/pacman.conf | grep -v "^#" | grep "\[cachyos]" &> /dev/null && UpdateCachyOSMirrors &
+	cat /etc/pacman.conf | grep -v "^#" | grep "\[cachyos-v3]" &> /dev/null && UpdateCachyOSV3Mirrors &
+	cat /etc/pacman.conf | grep -v "^#" | grep "\[cachyos-v4]" &> /dev/null && UpdateCachyOSV4Mirrors &
+	cat /etc/pacman.conf | grep -v "^#" | grep "\[chaotic-aur]" &> /dev/null && UpdateChaoticMirrors &
+}
+
+case $1 in
+	auto)
+		RootCheck
+		mkdir -p /etc/arch-tweaks
+		echo "1" > /etc/arch-tweaks/auto-mirrorlist-update
+		echo "Auto pacman mirrorlist update enabled."
+		UpdateAllMirrors;;
+	manual)
+		RootCheck
+		mkdir -p /etc/arch-tweaks
+		echo "0" > /etc/arch-tweaks/auto-mirrorlist-update
+		echo "Auto pacman mirrorlist disabled.";;
+	update)
+		RootCheck
+		UpdateAllMirrors;;
+	*)
+		echo "[ERROR] Unknown command, run \"$(basename $0) help\" for a list of commands"
+		exit 1;;
+esac

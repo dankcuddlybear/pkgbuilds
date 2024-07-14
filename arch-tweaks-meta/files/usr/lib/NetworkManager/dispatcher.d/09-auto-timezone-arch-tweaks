@@ -6,5 +6,5 @@ case "$2" in
 		AUTO_TIMEZONE="$(cat /etc/arch-tweaks/auto-timezone)"
 		[ -z "$AUTO_TIMEZONE" ] && AUTO_TIMEZONE=1
 		[ $AUTO_TIMEZONE != 1 ] && AUTO_TIMEZONE=1
-		[ $AUTO_TIMEZONE == 1 ] /usr/lib/arch-tweaks/system-tools/timezone update;;
+		[ $AUTO_TIMEZONE == 1 ] && /usr/lib/arch-tweaks/system-tools/timezone update;;
 esac
