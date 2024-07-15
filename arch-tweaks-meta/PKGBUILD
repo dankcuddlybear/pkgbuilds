@@ -25,6 +25,7 @@ package() {
 	for DIR in "$pkgdir/usr/bin" \
 	"$pkgdir/usr/lib/arch-tweaks/system-scripts" \
 	"$pkgdir/usr/lib/arch-tweaks/system-tools" \
+	"$pkgdir/usr/lib/NetworkManager/dispatcher.d" \
 	"$pkgdir/usr/lib/systemd/system-sleep"; do
 		cd "$DIR"; chmod +x *
 	done; cd "$CDIR"
