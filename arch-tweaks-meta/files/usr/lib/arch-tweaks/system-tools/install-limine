@@ -115,5 +115,6 @@ case "$1" in
 	uninstall)
 		rm -rf /boot/EFI/limine /boot/limine /boot/limine.cfg
 		echo "Limine has been removed from your /boot partition";;
+	help|--help|-h) Help;;
 	*) Error "Unrecognised command \"$1\"";;
 esac

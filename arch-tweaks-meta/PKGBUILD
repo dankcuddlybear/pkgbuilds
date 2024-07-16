@@ -8,13 +8,18 @@ url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
 	base
 	dmidecode
+	iproute2
 	hdparm
 	kernel-modules-hook
 	KSMBD-MODULE
 	mkinitcpio
 	networkmanager
+	pacman
+	rate-mirrors
 	sudo
+	systemd
 	terminus-font
+	wireless-regdb
 )
 package() {
 	cp -r "$srcdir/../files/etc" "$pkgdir"

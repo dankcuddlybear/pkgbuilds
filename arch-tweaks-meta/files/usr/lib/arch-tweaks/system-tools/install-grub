@@ -115,6 +115,7 @@ case "$1" in
 			Upgrade && grub-mkconfig -o /boot/grub/grub.cfg && \
 			echo "Upgraded GRUB boot loader successfully."
 		fi;;
+	help|--help|-h) Help;;
 	uninstall)
 		echo "Not yet implemented";;
 	*) Error "Unrecognised command \"$1\"";;

@@ -104,6 +104,7 @@ case $1 in
 					exit 1;;
 			esac
 		fi;;
+	help|--help|-h) Help;;
 	*)
 		echo "[ERROR] Unknown command, run \"$(basename $0) help\" for a list of commands"
 		exit 1;;
