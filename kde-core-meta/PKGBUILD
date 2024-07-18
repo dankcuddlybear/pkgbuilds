@@ -2,23 +2,40 @@
 pkgname=kde-core-meta
 pkgver=$(date +%Y.%-m.%-d)
 pkgrel=$(expr $(date +%-S) + $(expr 60 \* $(date +%-M)) + $(expr 3600 \* $(date +%-H)))
-pkgdesc='KDE Plasma barebones desktop - all-in-one package (only desktop, no apps)'
+pkgdesc='KDE Plasma desktop - all-in-one package (only desktop, no apps)'
 arch=(any)
 url='https://github.com/dankcuddlybear/pkgbuilds'
 depends=(
+	archives-meta
 	bluedevil bluez-obex
 	breeze-gtk
+	colord-kde
 	drkonqi
+	ebook-tools
+	ffmpegthumbs
 	flatpak-kcm
+	fwupd
+	icoutils
 	kaccounts-integration
+	kamera
 	kde-gtk-config gtk3
+	kdegraphics-mobipocket
+	kdegraphics-thumbnailers
+	kdenetwork-filesharing
 	kdialog
-	krdp
+	kimageformats
+	kio-admin
+	kio-extras
+	kio-gdrive
+	kio-zeroconf
 	kscreen
 	ksshaskpass
 	kwallet-pam libsecret
 	kwrited
+	libappimage
+	networking-meta
 	noto-fonts noto-fonts-cjk noto-fonts-emoji
+	openexr
 	plasma-desktop glib2 ibus packagekit-qt6 scim
 	plasma-disks
 	plasma-firewall
@@ -27,7 +44,13 @@ depends=(
 	plasma-thunderbolt
 	powerdevil power-profiles-daemon python-gobject
 	print-manager system-config-printer cups-pk-helper python-pysmbc
+	purpose
+	qt6-imageformats
+	qt6-tools
+	quota-tools
 	sddm-kcm
+	sshfs
+	taglib
 	xdg-desktop-portal-kde
 )
 package() {

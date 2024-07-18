@@ -10,6 +10,7 @@ depends=(
 	avahi
 	bluez
 	bluez-deprecated-tools
+	bluez-obex
 	bluez-utils
 	ethtool
 	iw
