@@ -36,7 +36,7 @@ depends=(
 	networking-meta
 	noto-fonts noto-fonts-cjk noto-fonts-emoji
 	openexr
-	plasma-desktop glib2 ibus packagekit-qt6 scim
+	plasma-desktop glib2 ibus scim
 	plasma-disks
 	plasma-firewall
 	plasma-nm qt6-webengine
