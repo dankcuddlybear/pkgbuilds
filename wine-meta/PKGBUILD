@@ -32,7 +32,7 @@ depends=(wine-gecko wine-mono wine-nine winesync-dkms winesync-header winesync-u
 	lib32-sdl2_ttf
 	lib32-smpeg
 	multimedia-codecs-meta
-	vkd3d-proton-git
+	vkd3d-proton-mingw-git
 )
 package() {
 	cp -r "$srcdir/../files/etc" "$pkgdir"
